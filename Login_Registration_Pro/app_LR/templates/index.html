@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN/REGISTER</title>
+</head>
+<body>
+    <div id="Box">
+        <div class="regBox">
+            <h1>Registration</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <label for="fname">First Name</label>
+                <input type="text" name="fname" id="fname" placeholder="First Name Here" required>
+                <label for="lname">Last Name</label>
+                <input type="text" name="lname" id="lname" placeholder="Last Name Here" required>
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="example@mail.com" required>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Password Here" required>
+                <label for="conpw">Confirm PW</label>
+                <input type="password" name="conpw" id="conpw" placeholder="Confirm Your Password" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+        <div class="logBox">
+            <h1>Login</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="example@mail.com" required>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Password Here" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
