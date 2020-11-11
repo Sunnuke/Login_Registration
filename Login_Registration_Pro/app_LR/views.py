@@ -4,3 +4,7 @@ from django.shortcuts import render, redirect, HttpResponse
 
 def index(request):
     return render(request, 'index.html')
+
+# Register Route
+def register(request):
+    e
