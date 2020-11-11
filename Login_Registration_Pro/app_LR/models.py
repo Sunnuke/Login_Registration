@@ -3,6 +3,7 @@ import re
 
 # Create your models here.
 class UserManager(models.Manager):
+    # Validations for creating a new User
     def user_validation(self, postData):
         errors = {}
         # Filter index for name format
@@ -11,20 +12,35 @@ class UserManager(models.Manager):
         EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
         # Checking for numerical characters(first name)
         if not gex.match(postData['fname']):
-            errors['fnumname'] = "Your First Name should not have numerical characters!"
+            errors['fnumname'] = "Your First Name should not have numerical or specail characters!"
         # Checking length of characters(first name)
         if len(postData['fname']) < 2:
             errors['fname'] = "Your First Name should be at least 2 characters!"
         # Checking for numerical characters(last name)
         if not gex.match(postData['lname']):
-            errors['lnumname'] = "Your Last Name should not have numerical characters!"
+            errors['lnumname'] = "Your Last Name should not have numerical or specail characters!"
         # Checking length of characters(last name)
-        if len(postData['fname']) < 2:
-            errors['fname'] = "Your Last Name should be at least 2 characters!"
+        if len(postData['lname']) < 2:
+            errors['lname'] = "Your Last Name should be at least 2 characters!"
         # Checking format of email and characters
         if not EMAIL_REGEX.match(postData['email']):
-            errors['email'] = "Your Last Name should be at least 2 characters!"
-        
+            errors['email'] = "Your email format was incorrect!"
+        if len(postData['password']) < 8:
+            errors['password'] = "Your password must be at least 8 characters!"
+        if not postData['password'] == postData['conpw']:
+            errors['conpw'] = "Your passwords don't match!"
+
+    # Validations for User Login
+    def login_validation(self, postData):
+        errors = {}
+        # The User being validated
+        user = User.objects.get(email=postData['email'])
+        # Checking if email exist
+        if not user:
+            errors['email'] = "That user does not exist, Please try again!"
+        # Checking if password is correct
+        if not bcrypt.checkpw(postData['password'].encode(), user.pw_hash.encode()):
+            errors['password'] = "The password you entered was invalid, Please try again!"
 
 
 class User(models.Model):
