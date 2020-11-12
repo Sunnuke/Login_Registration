@@ -43,7 +43,7 @@ class UserManager(models.Manager):
         if len(user) == 0:
             errors['email'] = "That user does not exist, Please try again!"
         if len(user) == 1:
-            hashkey = bcrypt.checkpw(postData['password'].encode(), user.password.encode())
+            hashkey = bcrypt.checkpw(postData['password'].encode(), user[0].password.encode())
             # Checking if password is correct
             if hashkey == False:
                 errors['password'] = "The password you entered was invalid, Please try again!"

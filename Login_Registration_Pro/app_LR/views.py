@@ -6,14 +6,12 @@ import bcrypt
 # Create your views here.
 
 def index(request):
-    context = {
-        'log': request.session['word']
-    }
     return render(request, 'index.html')
 
 # Register Route
 def register(request):
     request.session.clear()
+    request.session['reg'] = 1
     request.session['word'] = 'Registered'
     errors = User.objects.user_validation(request.POST)
     if len(errors) > 0:
@@ -25,18 +23,21 @@ def register(request):
     else:
         print('No errors')
         pw_hash = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt()).decode()
-        # user = User.objects.create(
-        #     first_name=request.POST['fname'],
-        #     last_name=request.POST['lname'],
-        #     email=request.POST['email'],
-        #     password=pw_hash
-        # )
-        # request.session['user'] = user.id
+        user = User.objects.create(
+            first_name=request.POST['fname'],
+            last_name=request.POST['lname'],
+            email=request.POST['email'],
+            password=pw_hash
+        )
+        request.session['user'] = user.id
+        test = User.objects.get(id=user.id)
+        print("first_name:",test.first_name, "last_name:",test.last_name, "email:",test.email, "password:",test.password)
     return redirect('/success')
 
 # Login Route
 def login(request):
     request.session.clear()
+    request.session['log'] = 1
     request.session['word'] = 'Logged In'
     errors = User.objects.login_validation(request.POST)
     if len(errors) > 0:
@@ -47,8 +48,8 @@ def login(request):
         return redirect('/')
     else:
         print('No errors')
-        # user = User.objects.get(email=request.POST['email'])
-        # request.session['user'] = user.id
+        user = User.objects.get(email=request.POST['email'])
+        request.session['user'] = user.id
     return redirect('/success')
 
 # Logged In/ Registered Route

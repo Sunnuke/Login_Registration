@@ -7,8 +7,8 @@
 </head>
 <body>
     <div id="Box">
-        <h1>Success! Welcome, Human!</h1>
-        <p>Successfully registered (or logged in)!</p>
+        <h1>Success! Welcome, {{ User.first_name }}!</h1>
+        <p>Successfully {{ status }}!</p>
     </div>
     <form action="/Logout">
         <button type="submit">Logout</button>
