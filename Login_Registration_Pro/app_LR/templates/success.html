@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logged In/ Registered</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'success.css' %}">
 </head>
 <body>
     <div id="Box">
         <h1>Success! Welcome, {{ User.first_name }}!</h1>
         <p>Successfully {{ status }}!</p>
+        <form action="/Logout">
+            <button type="submit">Logout</button>
+        </form>
     </div>
-    <form action="/Logout">
-        <button type="submit">Logout</button>
-    </form>
+    
 </body>
 </html>
