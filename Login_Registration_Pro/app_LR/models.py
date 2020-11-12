@@ -1,5 +1,6 @@
 from django.db import models
 import re
+import bcrypt
 
 # Create your models here.
 class UserManager(models.Manager):
@@ -25,22 +26,28 @@ class UserManager(models.Manager):
         # Checking format of email and characters
         if not EMAIL_REGEX.match(postData['email']):
             errors['email'] = "Your email format was incorrect!"
+        if User.objects.filter(email=postData['email']):
+            errors['used_email'] = "This email is already associated with another User!"
         if len(postData['password']) < 8:
             errors['password'] = "Your password must be at least 8 characters!"
         if not postData['password'] == postData['conpw']:
             errors['conpw'] = "Your passwords don't match!"
+        return errors
 
     # Validations for User Login
     def login_validation(self, postData):
         errors = {}
         # The User being validated
-        user = User.objects.get(email=postData['email'])
+        user = User.objects.filter(email=postData['email'])
         # Checking if email exist
-        if not user:
+        if len(user) == 0:
             errors['email'] = "That user does not exist, Please try again!"
-        # Checking if password is correct
-        if not bcrypt.checkpw(postData['password'].encode(), user.pw_hash.encode()):
-            errors['password'] = "The password you entered was invalid, Please try again!"
+        if len(user) == 1:
+            hashkey = bcrypt.checkpw(postData['password'].encode(), user.password.encode())
+            # Checking if password is correct
+            if hashkey == False:
+                errors['password'] = "The password you entered was invalid, Please try again!"
+        return errors
 
 
 class User(models.Model):

@@ -9,14 +9,21 @@
     <div id="Box">
         <div class="regBox">
             <h1>Registration</h1>
-            <form action="" method="POST">
+            <form action="/Register" method="POST">
+                {% if messages %}
+                    <ul>
+                    {% for message in messages %}
+                        <li style="color:red;">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
                 {% csrf_token %}
                 <label for="fname">First Name</label>
                 <input type="text" name="fname" id="fname" placeholder="First Name Here" required>
                 <label for="lname">Last Name</label>
                 <input type="text" name="lname" id="lname" placeholder="Last Name Here" required>
                 <label for="email">Email</label>
-                <input type="email" name="email" id="email" placeholder="example@mail.com" required>
+                <input type="text" name="email" id="email" placeholder="example@mail.com" required>
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" placeholder="Password Here" required>
                 <label for="conpw">Confirm PW</label>
@@ -26,7 +33,14 @@
         </div>
         <div class="logBox">
             <h1>Login</h1>
-            <form action="" method="POST">
+            <form action="/Login" method="POST">
+                {% if messages %}
+                    <ul>
+                    {% for message in messages %}
+                        <li style="color:red;">{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
                 {% csrf_token %}
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" placeholder="example@mail.com" required>
